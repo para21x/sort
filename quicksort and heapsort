@@ -1,0 +1,113 @@
+#include <iostream>;
+using namespace std;
+//=============================QUICKSORT===================================
+int part(int a[], int low, int high)
+{
+    int pivot = a[high];
+    int i = (low - 1);
+    int temp;
+    for (int j = low; j <= high - 1; j++)
+    {
+        if (a[j] < pivot)
+        {
+            i++;
+            temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+        }
+    }
+    temp = a[i+1];
+    a[i+1] = a[high];
+    a[high] = temp;
+    return (i + 1);
+}
+void quicksort(int a[], int low, int high)
+{
+    if (low < high)
+    {
+        int pi = part(a, low, high);
+        quicksort(a, low, pi - 1);
+        quicksort(a, pi + 1, high);
+    }
+}
+//=============================PRINT===================================
+void print(int a[],int n) {
+    cout << "[";
+    for (int i = 0; i < n; i++) {
+        if (i == 0) cout << a[i];
+        else cout << ", " << a[i];
+    }
+    cout << "]\n";
+}
+//=============================HEAPSORT===================================
+void heapify(int a[], int n, int i)
+{
+    int large = i;
+    int temp;
+    int l = 2 * i + 1;
+    int r = 2 * i + 2;
+    if (l < n && a[l] > a[large])
+        large = l;
+    if (r < n && a[r] > a[large])
+        large = r;
+    if (large!= i)
+    { 
+        temp = a[large];
+        a[large] = a[i];
+        a[i] = temp;
+        heapify(a, n, large);
+    }
+}
+void heapSort(int a[], int n)
+{
+    int temp;
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(a, n, i);
+    for (int i = n - 1; i >= 0; i--)
+    {
+        temp = a[i];
+        a[i] = a[0];
+        a[0] = temp;
+        heapify(a, i, 0);
+    }
+}
+
+int main()
+{
+    cout << "choose a sort: " << endl << "1. quicksort" << endl << "2. heapsort\n";
+    char k;
+    bool b = false;
+    while (b!=true) {
+        cout << "cin: ";
+        cin >> k;
+        if ((k == '1') || (k == '2')) {
+            switch (k) {
+            case '1':
+                int a[20], n;
+                cout << "enter the size (0 < n < 20): ";
+                cin >> n;
+                cout << "enter the values:\n";
+                for (int i = 0; i < n; i++) {
+                    cin >> a[i];
+                }
+                print(a, n);
+                quicksort(a, 0, n - 1);
+                print(a, n);
+                break;
+            case '2':
+                int arr[8], j = 8;
+                cout << "enter the values:\n";
+                for (int i = 0; i < j; i++) {
+                    cin >> arr[i];
+                }
+                int d = sizeof(arr) / sizeof(arr[0]);
+                print(arr, d);
+                heapSort(arr, d);
+                print(arr, d);
+                break;
+            }
+            b = true;
+        }
+        else b = false;
+    }
+}
